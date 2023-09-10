@@ -1,58 +1,35 @@
+/*
+
+Main Arduino File
+Copyright (C) 2023 Alex Blackman
+Available: https://github.com/afb26/ECS
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+*/
+
 #include <WiFi.h>
 #include <ESPAsyncWebServer.h>
 #include <SPIFFS.h>
 #include "mdfuncs.h"
 
-#define PWM1 18
-#define PWM2 17
-#define PWM3 17
-#define PWM4 6
-#define PWM5 5
-#define PWM6 4
-
-#define MA1 10 // IN1A
-#define MA2 11 // IN2A
-#define MA3 12 // PWMA
-
-#define MB1 13 // IN1B
-#define MB2 14 // IN2B
-#define MB3 21 // PWMB
-
-#define MC1 43 // IN1C
-#define MC2 44 // IN2C
-#define MC3 42 // PWMC
-
-#define MD1 41 // IN1D
-#define MD2 40 // IN2D
-#define MD3 30 // PWMD
 
 #define LEDPIN 3
 #define VBAT 2
 
-pinMode(PWM1, OUTPUT);
-pinMode(PWM2, OUTPUT);
-pinMode(PWM3, OUTPUT);
-pinMode(PWM4, OUTPUT);
-pinMode(PWM5, OUTPUT);
-pinMode(PWM6, OUTPUT);
 
-pinMode(MA1, OUTPUT);
-pinMode(MA2, OUTPUT);
-pinMode(MA3, OUTPUT);
-
-pinMode(MB1, OUTPUT);
-pinMode(MB2, OUTPUT);
-pinMode(MB3, OUTPUT);
-
-pinMode(MC1, OUTPUT);
-pinMode(MC2, OUTPUT);
-pinMode(MC3, OUTPUT);
-
-pinMode(MD1, OUTPUT);
-pinMode(MD2, OUTPUT);
-pinMode(MD3, OUTPUT);
-
-const char* ssid = "Battle Bot AP - SN2";
+const char* ssid = "Battle Bot AP - SNX";
 const char* password = "ecspassword";
 const char* targetPassword = "ecspassword";
 
@@ -72,6 +49,29 @@ bool scanSSID(const char* targetSSID) {
 
 void setup() {
   Serial.begin(9600);
+
+  pinMode(18, OUTPUT);
+  pinMode(17, OUTPUT);
+  pinMode(7, OUTPUT);
+  pinMode(6, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(4, OUTPUT);
+
+  pinMode(10, OUTPUT);
+  pinMode(11, OUTPUT);
+  pinMode(12, OUTPUT);
+
+  pinMode(13, OUTPUT);
+  pinMode(14, OUTPUT);
+  pinMode(21, OUTPUT);
+
+  pinMode(43, OUTPUT);
+  pinMode(44, OUTPUT);
+  pinMode(42, OUTPUT);
+
+  pinMode(41, OUTPUT);
+  pinMode(40, OUTPUT);
+  pinMode(39, OUTPUT);
 
   if (!SPIFFS.begin(true)) {
     Serial.println("SPIFFS Error");
@@ -107,27 +107,27 @@ void setup() {
   });
 
   server.on("/button/1", HTTP_GET, [](AsyncWebServerRequest * request) {
-    forwardTB6612();
+    forwardL298N();
     request->send(200);
   });
 
   server.on("/button/2", HTTP_GET, [](AsyncWebServerRequest * request) {
-    leftTB6612();
+    leftL298N();
     request->send(200);
   });
 
   server.on("/button/3", HTTP_GET, [](AsyncWebServerRequest * request) {
-    stopFuncTB6612();
+    stopFuncL298N();
     request->send(200);
   });
 
   server.on("/button/4", HTTP_GET, [](AsyncWebServerRequest * request) {
-    rightTB6612();
+    rightL298N();
     request->send(200);
   });
 
   server.on("/button/5", HTTP_GET, [](AsyncWebServerRequest * request) {
-    backwardTB6612();
+    backwardL298N();
     request->send(200);
   });
 

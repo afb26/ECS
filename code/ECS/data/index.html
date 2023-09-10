@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <script src="joy.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <!-- <h1>Battle Bots Testing Control</h1> -->
+    <!-- 
+    <div class="button-row">
+        <button onclick="buttonClicked(1)">Forward</button><br>
+    </div>
+    <div class="button-row">
+        <button onclick="buttonClicked(2)">Left</button><br>
+        <button onclick="buttonClicked(3)">Stop</button><br>
+        <button onclick="buttonClicked(4)">Right</button><br>
+    </div>
+    <div class="button-row">
+        <button onclick="buttonClicked(5)">Backward</button><br>
+    </div> -->
+
+    <div class="columnLateral">
+        <div id="joy1Div" style="width:200px;height:200px;margin:50px"></div>
+        X :<input id="joy1X" type="text" /></br>
+        Y :<input id="joy1Y" type="text" />
+    </div>
+    <div class="columnLateral">
+        <div id="joy2Div" style="width:200px;height:200px;margin:50px"></div>
+        X :<input id="joy2X" type="text" /></br>
+        Y :<input id="joy2Y" type="text" />
+    </div>
+
+    <script>
+        function buttonClicked(button) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/button/' + button, true);
+            xhr.send();
+            console.log(button)
+        }
+    </script>
+    <script type="text/javascript">
+
+        var joy1X = document.getElementById("joy1X");
+        var joy1Y = document.getElementById("joy1Y");
+        var Joy1 = new JoyStick('joy1Div', {
+            "internalStrokeColor": "orange",
+            "internalFillColor": "black",
+            "internalLineWidth": 4,
+            "externalStrokeColor": "orange",
+            "externalLineWidth": 1
+        }, function (stickData) {
+            joy1X.value = stickData.x;
+            joy1Y.value = stickData.y;
+        });
+        var joy2X = document.getElementById("joy2X");
+        var joy2Y = document.getElementById("joy2Y");
+        var Joy2 = new JoyStick('joy2Div', {
+            "internalStrokeColor": "orange",
+            "internalFillColor": "black",
+            "internalLineWidth": 4,
+            "externalStrokeColor": "orange",
+            "externalLineWidth": 1,
+        }, function (stickData) {
+            joy2X.value = stickData.x;
+            joy2Y.value = stickData.y;
+        });
+    </script>
+
+</body>
+
+</html>

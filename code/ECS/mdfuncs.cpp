@@ -1,5 +1,42 @@
+/*
+
+Motor Driver Functions Main File
+Copyright (C) 2023 Alex Blackman
+Available: https://github.com/afb26/ECS
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+*/
+
 #include "mdfuncs.h"
 #include <Arduino.h>
+
+#define MA1 10 // IN1A
+#define MA2 11 // IN2A
+#define MA3 12 // PWMA
+
+#define MB1 13 // IN1B
+#define MB2 14 // IN2B
+#define MB3 21 // PWMB
+
+#define MC1 43 // IN1C
+#define MC2 44 // IN2C
+#define MC3 42 // PWMC
+
+#define MD1 41 // IN1D
+#define MD2 40 // IN2D
+#define MD3 30 // PWMD
 
 // TB6612
 void forwardTB6612()
