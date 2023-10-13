@@ -19,7 +19,7 @@ Available: https://github.com/afb26/ECS
 
 */
 
-#include "mdfuncs.h"
+#include "MotorDriver.h"
 #include <Arduino.h>
 
 #define MA1 10 // IN1A

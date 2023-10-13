@@ -19,35 +19,41 @@ Available: https://github.com/afb26/ECS
 
 */
 
+// Uncomment ONLY one line to define motor driver
+#define USE_TB6612
+//#define USE_L298N
+
 #include <WiFi.h>
 #include <ESPAsyncWebServer.h>
 #include <SPIFFS.h>
-#include "mdfuncs.h"
-
+#include "MotorDriver.h"
 
 #define LEDPIN 3
 #define VBAT 2
 
-
-const char* ssid = "Battle Bot AP - SNX";
-const char* password = "ecspassword";
-const char* targetPassword = "ecspassword";
+// Replace "SNX" below with the serial number of your device (found on the back of the case)
+const char *ssid = "Battle Bot AP - SNX";
+const char *password = "ecspassword";
+const char *targetPassword = "ecspassword";
 
 AsyncWebServer server(80);
 
-bool scanSSID(const char* targetSSID) {
+bool scanSSID(const char *targetSSID)
+{
   int numNetworks = WiFi.scanNetworks();
 
-  for (int i = 0; i < numNetworks; ++i) {
-    if (WiFi.SSID(i) == targetSSID) {
+  for (int i = 0; i < numNetworks; ++i)
+  {
+    if (WiFi.SSID(i) == targetSSID)
+    {
       return true;
     }
   }
   return false;
 }
 
-
-void setup() {
+void setup()
+{
   Serial.begin(9600);
 
   pinMode(18, OUTPUT);
@@ -73,29 +79,35 @@ void setup() {
   pinMode(40, OUTPUT);
   pinMode(39, OUTPUT);
 
-  if (!SPIFFS.begin(true)) {
+  if (!SPIFFS.begin(true))
+  {
     Serial.println("SPIFFS Error");
     return;
   }
 
-  const char* targetSSID = "BattleBots";
+  const char *targetSSID = "BattleBots";
   bool found = scanSSID(targetSSID);
 
-  if (found) {
+  if (found)
+  {
     Serial.println("Boot in Wifi Mode");
     WiFi.begin(targetSSID);
-    while (WiFi.status() != WL_CONNECTED) {
+    while (WiFi.status() != WL_CONNECTED)
+    {
       delay(1000);
       Serial.println("Connecting");
     }
-  } else {
+  }
+  else
+  {
     Serial.println("Boot in AP Mode");
     WiFi.softAPConfig(IPAddress(10, 10, 10, 10), IPAddress(10, 10, 10, 10), IPAddress(255, 255, 255, 0));
     WiFi.softAP(ssid, password);
     Serial.println("SoftAP IP Address: " + WiFi.softAPIP().toString());
   }
 
-  server.on("/", HTTP_GET, [](AsyncWebServerRequest * request) {
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
+            {
     File file = SPIFFS.open("/data/index.html");
     if (!file) {
       Serial.println("Failed to open file");
@@ -103,37 +115,65 @@ void setup() {
       return;
     }
     request->send(SPIFFS, "/index.html", "text/html");
-    file.close();
-  });
+    file.close(); });
 
-  server.on("/button/1", HTTP_GET, [](AsyncWebServerRequest * request) {
-    forwardL298N();
-    request->send(200);
-  });
+  #if defined USE_TB6612
+    server.on("/button/1", HTTP_GET, [](AsyncWebServerRequest *request)
+              {
+      forwardTB6612();
+      request->send(200); });
 
-  server.on("/button/2", HTTP_GET, [](AsyncWebServerRequest * request) {
-    leftL298N();
-    request->send(200);
-  });
+    server.on("/button/2", HTTP_GET, [](AsyncWebServerRequest *request)
+              {
+      leftTB6612();
+      request->send(200); });
 
-  server.on("/button/3", HTTP_GET, [](AsyncWebServerRequest * request) {
-    stopFuncL298N();
-    request->send(200);
-  });
+    server.on("/button/3", HTTP_GET, [](AsyncWebServerRequest *request)
+              {
+      stopFuncTB6612();
+      request->send(200); });
 
-  server.on("/button/4", HTTP_GET, [](AsyncWebServerRequest * request) {
-    rightL298N();
-    request->send(200);
-  });
+    server.on("/button/4", HTTP_GET, [](AsyncWebServerRequest *request)
+              {
+      rightTB6612();
+      request->send(200); });
 
-  server.on("/button/5", HTTP_GET, [](AsyncWebServerRequest * request) {
-    backwardL298N();
-    request->send(200);
-  });
+    server.on("/button/5", HTTP_GET, [](AsyncWebServerRequest *request)
+              {
+      backwardTB6612();
+      request->send(200); });
+  #elif defined USE_L298N
+    server.on("/button/1", HTTP_GET, [](AsyncWebServerRequest *request)
+              {
+      forwardL298N();
+      request->send(200); });
+
+    server.on("/button/2", HTTP_GET, [](AsyncWebServerRequest *request)
+              {
+      leftL298N();
+      request->send(200); });
+
+    server.on("/button/3", HTTP_GET, [](AsyncWebServerRequest *request)
+              {
+      stopFuncL298N();
+      request->send(200); });
+
+    server.on("/button/4", HTTP_GET, [](AsyncWebServerRequest *request)
+              {
+      rightL298N();
+      request->send(200); });
+
+    server.on("/button/5", HTTP_GET, [](AsyncWebServerRequest *request)
+              {
+      backwardL298N();
+      request->send(200); });
+  #else
+  #error No Motor Driver defined...
+  #endif
 
   server.begin();
 }
 
-void loop() {
-
+void loop()
+{
 }
