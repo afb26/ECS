@@ -1,6 +1,6 @@
 # How to Lodge Issues
 
-**Use Issues for *issues* with the code, as well as feature requests**
+**Use Issues for *issues* with the code, as well as feature requests.**   
 *For general questions, use discussions instead*
 
 1. Navigate to the GitHub repository in a browser.
