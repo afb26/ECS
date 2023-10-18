@@ -20,6 +20,7 @@ Available: https://github.com/afb26/ECS
 */
 
 #include "MotorDriver.h"
+#include "UserDefines.h"
 #include <Arduino.h>
 
 #define MA1 10 // IN1A
@@ -38,8 +39,9 @@ Available: https://github.com/afb26/ECS
 #define MD2 40 // IN2D
 #define MD3 30 // PWMD
 
+#if defined USE_TB6612
 // TB6612
-void forwardTB6612()
+void forward()
 {
   Serial.println("Forward Function Activated");
   digitalWrite(MA1, HIGH);
@@ -56,7 +58,7 @@ void forwardTB6612()
   digitalWrite(MD3, HIGH);
 }
 
-void backwardTB6612()
+void backward()
 {
   Serial.println("Backward Function Activated");
   digitalWrite(MA1, LOW);
@@ -73,7 +75,7 @@ void backwardTB6612()
   digitalWrite(MD3, HIGH);
 }
 
-void rightTB6612()
+void right()
 {
   Serial.println("Right Function Activated");
   digitalWrite(MA1, LOW);
@@ -90,7 +92,7 @@ void rightTB6612()
   digitalWrite(MD3, HIGH);
 }
 
-void leftTB6612()
+void left()
 {
   Serial.println("Left Function Activated");
   digitalWrite(MA1, HIGH);
@@ -107,7 +109,7 @@ void leftTB6612()
   digitalWrite(MD3, HIGH);
 }
 
-void stopFuncTB6612()
+void stopFunc()
 {
   Serial.println("Stop Function Activated");
   digitalWrite(MA1, LOW);
@@ -123,9 +125,9 @@ void stopFuncTB6612()
   digitalWrite(MD2, LOW);
   digitalWrite(MD3, HIGH);
 }
-
+#elif defined USE_L298N
 // L298N
-void forwardL298N()
+void forward()
 {
   Serial.println("Forward Function Activated");
   digitalWrite(MA1, HIGH);
@@ -142,7 +144,7 @@ void forwardL298N()
   digitalWrite(MD3, HIGH);
 }
 
-void backwardL298N()
+void backward()
 {
   Serial.println("Backward Function Activated");
   digitalWrite(MA1, LOW);
@@ -159,7 +161,7 @@ void backwardL298N()
   digitalWrite(MD3, HIGH);
 }
 
-void rightL298N()
+void right()
 {
   Serial.println("Right Function Activated");
   digitalWrite(MA1, LOW);
@@ -176,7 +178,7 @@ void rightL298N()
   digitalWrite(MD3, HIGH);
 }
 
-void leftL298N()
+void left()
 {
   Serial.println("Left Function Activated");
   digitalWrite(MA1, HIGH);
@@ -193,7 +195,7 @@ void leftL298N()
   digitalWrite(MD3, LOW);
 }
 
-void stopFuncL298N()
+void stopFunc()
 {
   Serial.println("Stop Function Activated");
   digitalWrite(MA1, LOW);
@@ -209,3 +211,4 @@ void stopFuncL298N()
   digitalWrite(MD2, LOW);
   digitalWrite(MD3, LOW);
 }
+#endif

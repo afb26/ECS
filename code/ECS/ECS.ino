@@ -19,19 +19,17 @@ Available: https://github.com/afb26/ECS
 
 */
 
-// Uncomment ONLY one line to define motor driver
-#define USE_TB6612
-//#define USE_L298N
-
+#include "UserDefines.h"
+#include "MotorDriver.h"
 #include <WiFi.h>
 #include <ESPAsyncWebServer.h>
 #include <SPIFFS.h>
-#include "MotorDriver.h"
 
+// Define led and voltage measurement pins
 #define LEDPIN 3
 #define VBAT 2
 
-// Replace "SNX" below with the serial number of your device (found on the back of the case)
+// Replace "SNX" below with the serial number of your device (found on the back of the case).
 const char *ssid = "Battle Bot AP - SNX";
 const char *password = "ecspassword";
 const char *targetPassword = "ecspassword";
@@ -117,59 +115,30 @@ void setup()
     request->send(SPIFFS, "/index.html", "text/html");
     file.close(); });
 
-  #if defined USE_TB6612
     server.on("/button/1", HTTP_GET, [](AsyncWebServerRequest *request)
               {
-      forwardTB6612();
+      forward();
       request->send(200); });
 
     server.on("/button/2", HTTP_GET, [](AsyncWebServerRequest *request)
               {
-      leftTB6612();
+      left();
       request->send(200); });
 
     server.on("/button/3", HTTP_GET, [](AsyncWebServerRequest *request)
               {
-      stopFuncTB6612();
+      stopFunc();
       request->send(200); });
 
     server.on("/button/4", HTTP_GET, [](AsyncWebServerRequest *request)
               {
-      rightTB6612();
+      right();
       request->send(200); });
 
     server.on("/button/5", HTTP_GET, [](AsyncWebServerRequest *request)
               {
-      backwardTB6612();
+      backward();
       request->send(200); });
-  #elif defined USE_L298N
-    server.on("/button/1", HTTP_GET, [](AsyncWebServerRequest *request)
-              {
-      forwardL298N();
-      request->send(200); });
-
-    server.on("/button/2", HTTP_GET, [](AsyncWebServerRequest *request)
-              {
-      leftL298N();
-      request->send(200); });
-
-    server.on("/button/3", HTTP_GET, [](AsyncWebServerRequest *request)
-              {
-      stopFuncL298N();
-      request->send(200); });
-
-    server.on("/button/4", HTTP_GET, [](AsyncWebServerRequest *request)
-              {
-      rightL298N();
-      request->send(200); });
-
-    server.on("/button/5", HTTP_GET, [](AsyncWebServerRequest *request)
-              {
-      backwardL298N();
-      request->send(200); });
-  #else
-  #error No Motor Driver defined...
-  #endif
 
   server.begin();
 }

@@ -1,4 +1,4 @@
-# Equal Control System Usage Manual
+# Detailed PCB features
 
 *https://github.com/afb26/ECS*
 
@@ -39,15 +39,3 @@ If a motor is spinning in the reverse direction to intended, simply reverse the 
 | MX1 | XIN1   |
 | MX2 | XIN2   |
 | MX3 | PWMX   |
-
-## Instructions for Use
-
-**N.B. The code flashed by default to the ECS is not intended for competition use. The code presents a minimum interface for testing with simple Forward, Backward, Left, Right and Stop buttons.**
-
-The default code is intended for use with the TB6612 motor driver. If using a different motor driver please contact the competition team (details on last page) for updated code. In your email please include a link and/or other information about the motor driver being used.
-
-1. Power the ECS unit.
-2. On a mobile device, navigate the WiFi connections in Settings.A WiFi network named “Battle Bot AP” followed by the serial number of the unit will appear (may need to refresh WiFi).
-3. Connect to this network with the password, “ecspassword”.
-4. Open a browser on your device.
-5. Enter the web address “10.10.10.10”. A webpage will appear with 5 simple control buttons to test the workings of the Battle Bot.
